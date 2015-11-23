@@ -1,5 +1,6 @@
 package it.bitz.cuke2customer.view
 
+import groovy.io.FileType
 import org.apache.commons.io.DirectoryWalker
 
 class FeatureMenuRenderer extends DirectoryWalker {
@@ -18,7 +19,13 @@ class FeatureMenuRenderer extends DirectoryWalker {
 
     @Override
     protected boolean handleDirectory(File directory, int depth, Collection results) throws IOException {
-        return directory.name != '.svn'
+        boolean containsFeatureFiles = false
+        directory.eachFileRecurse (FileType.ANY) {
+            if (it.name =~ /\.feature$/) {
+                containsFeatureFiles = true
+            }
+        }
+        return containsFeatureFiles
     }
 
     @Override
